@@ -38,40 +38,40 @@ function amazin_render_form() {
             <!-- product box name -->
             <div class="form-field">
                 <label for="product-box-name">Product Box name</label>
-                <input type="text" id="product-box-name" placeholder="Give this product box a useful name"/>
+                <input type="text" id="product-box-name" name="amazin-product-box-name" placeholder="Give this product box a useful name"/>
             </div>
 
             <!-- product name -->
             <div class="form-field">
                 <label for="product-name">Product Name</label>
-                <input type="text" id="product-name" placeholder="Enter the product name here"/>
+                <input type="text" id="product-name" name="amazin-product-name" placeholder="Enter the product name here"/>
             </div>
 
             <!-- product tagline -->
             <div class="form-field">
                 <label for="product-tagline">Product Tagline</label>
-                <input type="text" id="product-tagline" placeholder="Write a few words summarizing this product"/>
+                <input type="text" id="product-tagline" name="amazin-product-tagline" placeholder="Write a few words summarizing this product"/>
             </div>
 
             <!-- product description -->
             <div class="form-field">
                 <label for="product-description">Product Description</label>
-                <input type="text" id="product-description" placeholder="Write about 100 characters explaining why this product is great."/>
+                <input type="text" id="product-description" name="amazin-product-description" placeholder="Write about 100 characters explaining why this product is great."/>
             </div>
 
             <!-- product URL -->
             <div class="form-field">
                 <label for="product-url">Affiliate link</label>
-                <input type="text" id="product-url" placeholder="http://amazon.com/affiliate-link-here"/>
+                <input type="text" id="product-url" name="amazin-product-url" placeholder="http://amazon.com/affiliate-link-here"/>
             </div>
 
             <!-- Button text -->
             <div class="form-field">
                 <label for="product-button-text">Button text</label>
-                <input type="text" id="product-button-text" placeholder="See XYZ product on Amazon.com"/>
+                <input type="text" id="product-button-text" name="amazin-product-button-text" placeholder="See XYZ product on Amazon.com"/>
             </div>
 
-            <input type="submit"/>
+            <input type="submit" name="submit"/>
         </form>
 
     </div>
@@ -107,15 +107,28 @@ function amazin_render_table() {
 }
 
 function post_new_product_box() {
-    $my_post = array(
-        'post_title'    => 'Test product box',
-        'post_content'  => 'Test description',
-        'post_status'   => 'publish',
-        'post_author'   => 1,
-        'post_category' => array( 8,39 )
-    );
+    if ( isset( $_POST['submit'] ) ) {
+        // retrieve the form data by using the element's name attributes
+        // value as key $firstname = $_GET['firstname']; $lastname = $_GET['lastname'];
+        // display the results echo '<h3>Form GET Method</h3>'; echo 'Your name is ' . $lastname . ' ' . $firstname; exit;
+        $content = array(
+            "amazin-product-name" => $_POST['amazin-product-name'],
+            "amazin-product-tagline" => $_POST['amazin-product-tagline'],
+            "amazin-product-description" => $_POST['amazin-product-description'],
+            "amazin-product-url" => $_POST['amazin-product-url'],
+            "amazin-product-button-text" => $_POST['amazin-product-button-text']
+        );
 
-    // Insert the post into the database.
-    wp_insert_post( $my_post );
+        $product_box = array(
+            'post_title'    => $_REQUEST['amazin-product-box-name'],
+            'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
+            'post_status'   => 'publish',
+            'post_author'   => 1,
+            'post_category' => array( 8,39 )
+        );
+
+        // Insert the post into the database.
+        wp_insert_post( $product_box );
+    }
 }
 ?>
