@@ -104,4 +104,3 @@ function amazin_render_table() {
 }
 
 ?>
-
