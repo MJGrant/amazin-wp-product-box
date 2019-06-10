@@ -35,6 +35,7 @@ function amazin_render_form() {
     <div class="form-wrap">
         <form action="<?php echo esc_url( post_new_product_box() ); ?>" method="post">
 
+            <?php wp_nonce_field( 'nonce_action', 'amazin_nonce_field', true, true ); ?>
             <!-- product box name -->
             <div class="form-field">
                 <label for="product-box-name">Product Box name</label>
@@ -108,27 +109,34 @@ function amazin_render_table() {
 
 function post_new_product_box() {
     if ( isset( $_POST['submit'] ) ) {
-        // retrieve the form data by using the element's name attributes
-        // value as key $firstname = $_GET['firstname']; $lastname = $_GET['lastname'];
-        // display the results echo '<h3>Form GET Method</h3>'; echo 'Your name is ' . $lastname . ' ' . $firstname; exit;
-        $content = array(
-            "amazin-product-name" => $_POST['amazin-product-name'],
-            "amazin-product-tagline" => $_POST['amazin-product-tagline'],
-            "amazin-product-description" => $_POST['amazin-product-description'],
-            "amazin-product-url" => $_POST['amazin-product-url'],
-            "amazin-product-button-text" => $_POST['amazin-product-button-text']
-        );
+        //check nonce
+        if (! isset ( $_POST['amazin_nonce_field'] ) || ! wp_verify_nonce( $_POST['amazin_nonce_field'], 'nonce_action' ) ) {
+            print 'Sorry, your nonce did not verify.';
+            exit;
+        } else {
+            //process form data
+            // retrieve the form data by using the element's name attributes
+            // value as key $firstname = $_GET['firstname']; $lastname = $_GET['lastname'];
+            // display the results echo '<h3>Form GET Method</h3>'; echo 'Your name is ' . $lastname . ' ' . $firstname; exit;
+            $content = array(
+                "amazin-product-name" => $_POST['amazin-product-name'],
+                "amazin-product-tagline" => $_POST['amazin-product-tagline'],
+                "amazin-product-description" => $_POST['amazin-product-description'],
+                "amazin-product-url" => $_POST['amazin-product-url'],
+                "amazin-product-button-text" => $_POST['amazin-product-button-text']
+            );
 
-        $product_box = array(
-            'post_title'    => $_REQUEST['amazin-product-box-name'],
-            'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
-            'post_status'   => 'publish',
-            'post_author'   => 1,
-            'post_category' => array( 8,39 )
-        );
+            $product_box = array(
+                'post_title'    => $_REQUEST['amazin-product-box-name'],
+                'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
+                'post_status'   => 'publish',
+                'post_author'   => 1,
+                'post_category' => array( 8,39 )
+            );
 
-        // Insert the post into the database.
-        wp_insert_post( $product_box );
+            // Insert the post into the database.
+            wp_insert_post( $product_box );
+        }
     }
 }
 ?>
