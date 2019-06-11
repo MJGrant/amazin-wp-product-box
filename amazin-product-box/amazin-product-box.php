@@ -11,7 +11,8 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 if ( is_admin() ){ // admin actions
-  add_action( 'admin_menu', 'amazin_plugin_menu' );
+    add_action( 'admin_menu', 'amazin_plugin_menu' );
+    add_action( 'init', 'create_post_type' );
 } else {
   // non-admin enqueues, actions, and filters
 }
@@ -107,6 +108,25 @@ function amazin_render_table() {
     return;
 }
 
+function create_post_type() {
+    register_post_type('amazin_product_box',
+        //custom post type options
+        array(
+            'labels' => array(
+                'name' => __( 'Amazin Product Boxes' ),
+                'singular_name' => __( ' Amazin Product Box ')
+            ),
+            'public'            => false,
+            'show_ui'           => false,
+            'query_var'         => false,
+            'rewrite'           => false,
+            'capability_type'   => 'amazin_product_box',
+            'has_archive'       => true,
+            'can_export'        => true,
+        )
+    );
+}
+
 function post_new_product_box() {
     if ( isset( $_POST['submit'] ) ) {
         //check nonce
@@ -128,6 +148,7 @@ function post_new_product_box() {
 
             $product_box = array(
                 'post_title'    => $_REQUEST['amazin-product-box-name'],
+                'post_type'     => 'amazin_product_box',
                 'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
                 'post_status'   => 'publish',
                 'post_author'   => 1,
