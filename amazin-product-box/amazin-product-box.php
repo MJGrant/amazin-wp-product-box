@@ -82,6 +82,10 @@ function amazin_render_form() {
 }
 
 function amazin_render_table() {
+    $args = array(
+        'post_type' =>  'amazin_product_box'
+        );
+    $productBoxes = get_posts($args);
     ?>
     <table>
         <thead>
@@ -94,14 +98,20 @@ function amazin_render_table() {
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!-- for loop through saved boxes -->
-                <td>[shortcode here]</td>
-                <td>Sample Name</td>
-                <td>Sample Author</td>
-                <td>Sample Date</td>
-                <td><button>Edit</button> <button>Delete</button></td>
-            </tr>
+            <?php
+            if ($productBoxes):
+                foreach ($productBoxes as $productBox):
+                ?>
+                <tr>
+                    <!-- for loop through saved boxes -->
+                    <td>[shortcode here]</td>
+                    <td><?php echo get_the_title($productBox->ID); ?></td>
+                    <td><?php echo get_the_author_meta( 'display_name', $productBox->post_author ); ?></td>
+                    <td><?php echo get_the_modified_time('M d, Y h:i:s A', $productBox->ID ); ?></td>
+                    <td><button>Edit</button> <button>Delete</button></td>
+                </tr>
+            <?php endforeach; wp_reset_postdata(); ?>
+        <?php endif; ?>
         </tbody>
     </table>
     <?php
