@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 if ( is_admin() ){ // admin actions
     add_action( 'admin_menu', 'amazin_plugin_menu' );
     add_action( 'init', 'create_post_type' );
+    $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.05);
 } else {
   // non-admin enqueues, actions, and filters
 }
@@ -75,7 +77,6 @@ function amazin_render_form() {
 
             <input type="submit" name="submit"/>
         </form>
-
     </div>
     <?php
     return;
@@ -87,7 +88,7 @@ function amazin_render_table() {
         );
     $productBoxes = get_posts($args);
     ?>
-    <table>
+    <table id="admin-table">
         <thead>
             <tr>
                 <th>Shortcode</th>
@@ -101,14 +102,15 @@ function amazin_render_table() {
             <?php
             if ($productBoxes):
                 foreach ($productBoxes as $productBox):
+                    $id=$productBox->ID;
                 ?>
                 <tr>
                     <!-- for loop through saved boxes -->
                     <td>[shortcode here]</td>
-                    <td><?php echo get_the_title($productBox->ID); ?></td>
+                    <td><?php echo get_the_title($id); ?></td>
                     <td><?php echo get_the_author_meta( 'display_name', $productBox->post_author ); ?></td>
-                    <td><?php echo get_the_modified_time('M d, Y h:i:s A', $productBox->ID ); ?></td>
-                    <td><button>Edit</button> <button>Delete</button></td>
+                    <td><?php echo get_the_modified_time('M d, Y h:i:s A', $id ); ?></td>
+                    <td><input type="button" id="<?php echo $id; ?>" class="edit-button" value="Edit"/> <input type="button" id="<?php echo $id; ?>" class="delete-button" value="Delete"/></td>
                 </tr>
             <?php endforeach; wp_reset_postdata(); ?>
         <?php endif; ?>
