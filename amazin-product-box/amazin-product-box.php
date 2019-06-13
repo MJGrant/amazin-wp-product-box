@@ -13,8 +13,11 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 if ( is_admin() ){ // admin actions
     add_action( 'admin_menu', 'amazin_plugin_menu' );
     add_action( 'init', 'create_post_type' );
+    add_action( 'wp_ajax_amazin_delete_post', 'amazin_delete_post' );
+
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.05);
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.21);
+    wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
   // non-admin enqueues, actions, and filters
 }
@@ -104,7 +107,7 @@ function amazin_render_table() {
                 foreach ($productBoxes as $productBox):
                     $id=$productBox->ID;
                 ?>
-                <tr>
+                <tr id="<?php echo "row-" . $id; ?>">
                     <!-- for loop through saved boxes -->
                     <td>[shortcode here]</td>
                     <td><?php echo get_the_title($id); ?></td>
@@ -171,5 +174,11 @@ function post_new_product_box() {
             wp_insert_post( $product_box );
         }
     }
+}
+
+function amazin_delete_post( ) {
+    wp_delete_post($_REQUEST['id']);
+    echo 'success';
+    die();
 }
 ?>
