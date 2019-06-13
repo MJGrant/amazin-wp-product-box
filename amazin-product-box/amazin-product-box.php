@@ -42,16 +42,10 @@ function amazin_render_form() {
         <form action="<?php echo esc_url( post_new_product_box() ); ?>" method="post">
 
             <?php wp_nonce_field( 'nonce_action', 'amazin_nonce_field', true, true ); ?>
-            <!-- product box name -->
-            <div class="form-field">
-                <label for="product-box-name">Product Box name</label>
-                <input type="text" id="product-box-name" name="amazin-product-box-name" placeholder="Give this product box a useful name"/>
-            </div>
-
             <!-- product name -->
             <div class="form-field">
                 <label for="product-name">Product Name</label>
-                <input type="text" id="product-name" name="amazin-product-name" placeholder="Enter the product name here"/>
+                <input type="text" id="product-name" name="amazin-product-name" placeholder="Enter the product's name"/>
             </div>
 
             <!-- product tagline -->
@@ -69,13 +63,13 @@ function amazin_render_form() {
             <!-- product URL -->
             <div class="form-field">
                 <label for="product-url">Affiliate link</label>
-                <input type="text" id="product-url" name="amazin-product-url" placeholder="http://amazon.com/affiliate-link-here"/>
+                <input type="text" id="product-url" name="amazin-product-url" placeholder="http://retailer.com/affiliate-link-here"/>
             </div>
 
             <!-- Button text -->
             <div class="form-field">
                 <label for="product-button-text">Button text</label>
-                <input type="text" id="product-button-text" name="amazin-product-button-text" placeholder="See XYZ product on Amazon.com"/>
+                <input type="text" id="product-button-text" name="amazin-product-button-text" placeholder="See XYZ product on Retailer.com"/>
             </div>
 
             <input type="submit" name="submit"/>
@@ -94,6 +88,7 @@ function amazin_render_table() {
     <table id="admin-table">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Shortcode</th>
                 <th>Product Name</th>
                 <th>Author</th>
@@ -109,6 +104,7 @@ function amazin_render_table() {
                 ?>
                 <tr id="<?php echo "row-" . $id; ?>">
                     <!-- for loop through saved boxes -->
+                    <td><?php echo $id ?></td>
                     <td>[shortcode here]</td>
                     <td><?php echo get_the_title($id); ?></td>
                     <td><?php echo get_the_author_meta( 'display_name', $productBox->post_author ); ?></td>
