@@ -16,7 +16,7 @@ if ( is_admin() ){ // admin actions
     add_action( 'wp_ajax_amazin_delete_post', 'amazin_delete_post' );
 
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.21);
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.31);
     wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
   // non-admin enqueues, actions, and filters
@@ -113,7 +113,7 @@ function amazin_render_table() {
                     <td><?php echo get_the_title($id); ?></td>
                     <td><?php echo get_the_author_meta( 'display_name', $productBox->post_author ); ?></td>
                     <td><?php echo get_the_modified_time('M d, Y h:i:s A', $id ); ?></td>
-                    <td><input type="button" id="<?php echo $id; ?>" class="edit-button" value="Edit"/> <input type="button" id="<?php echo $id; ?>" class="delete-button" value="Delete"/></td>
+                    <td><input type="button" id="<?php echo $id; ?>" class="edit-button" value="Edit"/> <input type="button" id="<?php echo $id; ?>" class="delete-button" nonce="<?php echo wp_create_nonce('amazin_delete_post_nonce') ?>" value="Delete"/></td>
                 </tr>
             <?php endforeach; wp_reset_postdata(); ?>
         <?php endif; ?>
@@ -177,8 +177,13 @@ function post_new_product_box() {
 }
 
 function amazin_delete_post( ) {
-    wp_delete_post($_REQUEST['id']);
-    echo 'success';
+    $permission = wp_verify_nonce( $_POST['nonce'], 'amazin_delete_post_nonce' );
+    if ( $permission == false ) {
+        echo 'error';
+    } else {
+        wp_delete_post($_REQUEST['id']);
+        echo 'success';
+    }
     die();
 }
 ?>
