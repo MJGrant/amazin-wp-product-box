@@ -14,9 +14,11 @@ if ( is_admin() ){ // admin actions
     add_action( 'admin_menu', 'amazin_plugin_menu' );
     add_action( 'init', 'create_post_type' );
     add_action( 'wp_ajax_amazin_delete_post', 'amazin_delete_post' );
+    add_action( 'wp_ajax_amazin_get_existing_post', 'amazin_get_existing_post' );
 
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.31);
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.42);
+
     wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
   // non-admin enqueues, actions, and filters
@@ -150,15 +152,15 @@ function post_new_product_box() {
             // value as key $firstname = $_GET['firstname']; $lastname = $_GET['lastname'];
             // display the results echo '<h3>Form GET Method</h3>'; echo 'Your name is ' . $lastname . ' ' . $firstname; exit;
             $content = array(
-                "amazin-product-name" => $_POST['amazin-product-name'],
-                "amazin-product-tagline" => $_POST['amazin-product-tagline'],
-                "amazin-product-description" => $_POST['amazin-product-description'],
-                "amazin-product-url" => $_POST['amazin-product-url'],
-                "amazin-product-button-text" => $_POST['amazin-product-button-text']
+                "productName" => $_POST['amazin-product-name'],
+                "productTagline" => $_POST['amazin-product-tagline'],
+                "productDescription" => $_POST['amazin-product-description'],
+                "productUrl" => $_POST['amazin-product-url'],
+                "productButtonText" => $_POST['amazin-product-button-text']
             );
 
             $product_box = array(
-                'post_title'    => $_REQUEST['amazin-product-box-name'],
+                'post_title'    => $_REQUEST['amazin-product-name'],
                 'post_type'     => 'amazin_product_box',
                 'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
                 'post_status'   => 'publish',
@@ -180,6 +182,17 @@ function amazin_delete_post( ) {
         wp_delete_post($_REQUEST['id']);
         echo 'success';
     }
+    die();
+}
+
+function amazin_get_existing_post( ) {
+    $post = get_post($_REQUEST['id']);
+    $postDataToBePassed = array(
+        'productBoxProductName' => $post->post_title,
+        'productBoxData' => $post->post_content
+    );
+
+    wp_send_json($postDataToBePassed);
     die();
 }
 ?>
