@@ -26,15 +26,16 @@ if ( is_admin() ){ // admin actions
 
 function amazin_product_box_render_in_post($productBox) {
     ob_start();
+    $id = $productBox->ID;
     $productBoxTitle = $productBox->post_title;
     $stripped = stripslashes($productBox->post_content);
     $content = json_decode($stripped, true);
     ?>
-        <div class="product-box" id="product-box-id" style="border:1px solid grey;">
-            <h3><?php echo $productBoxTitle ?></h3>
-            <p><?php echo $content['productTagline'] ?></p>
-            <p><?php echo $content['productDescription'] ?></p>
-            <a href="<?php echo $content['productLink'] ?>"><?php echo $content['productButtonText'] ?></a>
+        <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>" style="border:1px solid grey;">
+            <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
+            <p class="amazin-product-box-tagline"><?php echo $content['productTagline'] ?></p>
+            <p class="amazin-product-box-description" ><?php echo $content['productDescription'] ?></p>
+            <a class="amazin-product-box-button" href="<?php echo $content['productLink'] ?>"><?php echo $content['productButtonText'] ?></a>
         </div>
     <?php
     return ob_get_clean();
