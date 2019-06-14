@@ -17,7 +17,7 @@ if ( is_admin() ){ // admin actions
     add_action( 'wp_ajax_amazin_get_existing_post', 'amazin_get_existing_post' );
 
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.42);
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.60);
 
     wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
@@ -40,10 +40,17 @@ function amazin_render_form() {
     ?>
     <h2>Amazin' Product Box</h2>
     <p>Create, edit, delete and manage your product boxes here.</p>
+
+    <h3 id="current-form-behavior-title">Create a new Product Box</h3>
     <div class="form-wrap">
-        <form action="<?php echo esc_url( post_new_product_box() ); ?>" method="post">
+        <form id="product-box-form" action="<?php echo esc_url( post_new_product_box() ); ?>" method="post">
 
             <?php wp_nonce_field( 'nonce_action', 'amazin_nonce_field', true, true ); ?>
+            <!-- product ID, hidden, distinguishes new one from editing -->
+            <div class="form-field">
+                <input type="hidden" id="product-id" name="amazin-product-id"/>
+            </div>
+
             <!-- product name -->
             <div class="form-field">
                 <label for="product-name">Product Name</label>
@@ -74,7 +81,8 @@ function amazin_render_form() {
                 <input type="text" id="product-button-text" name="amazin-product-button-text" placeholder="See XYZ product on Retailer.com"/>
             </div>
 
-            <input type="submit" name="submit"/>
+            <input type="submit" name="submit" value="Submit" id="form-submit"/>
+            <input type="button" name="cancel" value="Cancel" id="form-cancel"/>
         </form>
     </div>
     <?php
@@ -83,7 +91,8 @@ function amazin_render_form() {
 
 function amazin_render_table() {
     $args = array(
-        'post_type' =>  'amazin_product_box'
+        'post_type' =>  'amazin_product_box',
+        'numberposts' => -1
         );
     $productBoxes = get_posts($args);
     ?>
@@ -147,10 +156,9 @@ function post_new_product_box() {
             print 'Sorry, your nonce did not verify.';
             exit;
         } else {
-            //process form data
-            // retrieve the form data by using the element's name attributes
-            // value as key $firstname = $_GET['firstname']; $lastname = $_GET['lastname'];
-            // display the results echo '<h3>Form GET Method</h3>'; echo 'Your name is ' . $lastname . ' ' . $firstname; exit;
+            //Distinguish between adding a new Product Box and editing an existing Product Box
+            $id = $_POST['amazin-product-id'];
+
             $content = array(
                 "productName" => $_POST['amazin-product-name'],
                 "productTagline" => $_POST['amazin-product-tagline'],
@@ -160,6 +168,7 @@ function post_new_product_box() {
             );
 
             $product_box = array(
+                'ID'            => $id,
                 'post_title'    => $_REQUEST['amazin-product-name'],
                 'post_type'     => 'amazin_product_box',
                 'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
@@ -168,8 +177,17 @@ function post_new_product_box() {
                 'post_category' => array( 8,39 )
             );
 
-            // Insert the post into the database.
-            wp_insert_post( $product_box );
+            if ($id) {
+                // If $id exists, we're editing an existing one: update post
+                wp_update_post ( $product_box );
+            } else {
+                // It's a new one: insert the post into the database.
+                wp_insert_post( $product_box );
+            }
+
+
+
+
         }
     }
 }
@@ -187,12 +205,17 @@ function amazin_delete_post( ) {
 
 function amazin_get_existing_post( ) {
     $post = get_post($_REQUEST['id']);
-    $postDataToBePassed = array(
-        'productBoxProductName' => $post->post_title,
-        'productBoxData' => $post->post_content
-    );
+    if ($post) {
+        $postDataToBePassed = array(
+            'productBoxProductName' => $post->post_title,
+            'productBoxID' => $post->ID,
+            'productBoxData' => $post->post_content
+        );
+        wp_send_json($postDataToBePassed);
+    } else {
+        echo 'error retrieving post';
+    }
 
-    wp_send_json($postDataToBePassed);
     die();
 }
 ?>

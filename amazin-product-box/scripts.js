@@ -25,7 +25,6 @@ jQuery ( document ).ready ( function ( $ ) {
     });
 
     $ ( '#admin-table').on( 'click', '.edit-button', function(e) {
-        console.log("Gonna edit a product box with ID:", e.target.id);
         var id = e.target.id;
 
         $.ajax({
@@ -36,15 +35,40 @@ jQuery ( document ).ready ( function ( $ ) {
                 id: id
             },
             success: function ( response ) {
-                console.log( response );
+                var id = response.productBoxID;
                 var data = JSON.parse(response.productBoxData);
+
+                $ ("#current-form-behavior-title").text("Editing Product Box ID " + id);
+
+                $ ("#product-id").val(id);
                 $ ("#product-name").val(data.productName);
                 $ ("#product-tagline").val(data.productTagline);
                 $ ("#product-description").val(data.productDescription);
                 $ ("#product-url").val(data.productUrl);
                 $ ("#product-button-text").val(data.productButtonText);
+
+                //change "Submit" button text to "Update"
+                $ ("#form-submit").val("Update");
+                $ ("#form-cancel").val("Cancel Edit");
+
             }
         });
+        return false;
+    } );
+
+    $ ( '#product-box-form').on( 'click', '#form-cancel', function(e) {
+
+        // Reset title, clear form fields
+        $ ("#current-form-behavior-title").text("Create a new Product Box");
+        $ ("#product-box-form")[0].reset();
+
+        // Put buttons back to "Submit" and "Clear" (for a new one)
+        $ ("#form-submit").val("Submit");
+        $ ("#form-cancel").val("Clear Form");
+
+        //Clear ID so the form acts like "Submit new one" again
+        $ ("#product-id").val(undefined);
+
         return false;
     } );
 
