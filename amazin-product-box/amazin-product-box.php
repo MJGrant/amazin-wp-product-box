@@ -148,7 +148,7 @@ function amazin_render_table() {
                 <tr id="<?php echo "row-" . $id; ?>">
                     <!-- for loop through saved boxes -->
                     <td><?php echo $id ?></td>
-                    <td>[shortcode here]</td>
+                    <td>[amazin-product-box id="<?php echo $id ?>"]</td>
                     <td><?php echo get_the_title($id); ?></td>
                     <td><?php echo get_the_author_meta( 'display_name', $productBox->post_author ); ?></td>
                     <td><?php echo get_the_modified_time('M d, Y h:i:s A', $id ); ?></td>
