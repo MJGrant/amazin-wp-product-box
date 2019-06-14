@@ -17,12 +17,43 @@ if ( is_admin() ){ // admin actions
     add_action( 'wp_ajax_amazin_get_existing_post', 'amazin_get_existing_post' );
 
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.60);
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.61);
 
     wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
   // non-admin enqueues, actions, and filters
 }
+
+function amazin_product_box_render_in_post($productBox) {
+    ob_start();
+    $productBoxTitle = $productBox->post_title;
+    $stripped = stripslashes($productBox->post_content);
+    $content = json_decode($stripped, true);
+    ?>
+        <div class="product-box" id="product-box-id" style="border:1px solid grey;">
+            <h3><?php echo $productBoxTitle ?></h3>
+            <p><?php echo $content['productTagline'] ?></p>
+            <p><?php echo $content['productDescription'] ?></p>
+            <a href="<?php echo $content['productLink'] ?>"><?php echo $content['productButtonText'] ?></a>
+        </div>
+    <?php
+    return ob_get_clean();
+}
+
+function amazin_product_box_shortcode( $atts ) {
+    $a = shortcode_atts( array(
+        'id' => 'id'
+        ), $atts );
+
+    $productBox = get_post($a['id']);
+
+    if ($productBox) {
+        return amazin_product_box_render_in_post($productBox);
+    } else {
+        return 'Error displaying Amazin Product Box';
+    }
+}
+add_shortcode( 'amazin-product-box', 'amazin_product_box_shortcode' );
 
 function amazin_plugin_menu() {
     add_menu_page( 'Amazin\' Product Box Management', 'Amazin\' Product Box', 'manage_options', 'amazin-product-box', 'amazin_display_management_page' );
@@ -184,10 +215,6 @@ function post_new_product_box() {
                 // It's a new one: insert the post into the database.
                 wp_insert_post( $product_box );
             }
-
-
-
-
         }
     }
 }
@@ -218,4 +245,5 @@ function amazin_get_existing_post( ) {
 
     die();
 }
+
 ?>
