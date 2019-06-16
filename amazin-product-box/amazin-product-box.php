@@ -17,12 +17,14 @@ if ( is_admin() ){ // admin actions
     add_action( 'wp_ajax_amazin_get_existing_post', 'amazin_get_existing_post' );
 
     $jsurl = plugin_dir_url(__FILE__) . 'scripts.js';
-    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.61);
-
+    wp_enqueue_script('scripts', $jsurl, array('jquery'), 1.64);
     wp_localize_script('scripts', 'MyAjax', array('ajaxurl' => admin_url('admin-ajax.php') ) );
 } else {
   // non-admin enqueues, actions, and filters
 }
+
+$cssurl = plugin_dir_url(__FILE__) . 'styles.css';
+wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.23 );
 
 function amazin_product_box_render_in_post($productBox) {
     ob_start();
@@ -31,11 +33,21 @@ function amazin_product_box_render_in_post($productBox) {
     $stripped = stripslashes($productBox->post_content);
     $content = json_decode($stripped, true);
     ?>
-        <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>" style="border:1px solid grey;">
+        <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
+            <p class="amazin-product-box-recommend-text">We recommend</p>
             <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
-            <p class="amazin-product-box-tagline"><?php echo $content['productTagline'] ?></p>
-            <p class="amazin-product-box-description" ><?php echo $content['productDescription'] ?></p>
-            <a class="amazin-product-box-button" href="<?php echo $content['productLink'] ?>"><?php echo $content['productButtonText'] ?></a>
+            <div class="row">
+                <div class="amazin-product-box-column amazin-product-box-left">
+                    Picture placeholder
+                </div>
+                <div class="amazin-product-box-column amazin-product-box-right">
+                    <p class="amazin-product-box-tagline"><?php echo $content['productTagline'] ?></p>
+                    <p class="amazin-product-box-description" ><?php echo $content['productDescription'] ?></p>
+                </div>
+            </div>
+            <div class="amazin-product-box-button-wrap">
+                <a href="<?php echo $content['productLink'] ?>" class="amazin-product-box-button"><?php echo $content['productButtonText'] ?></a>
+            </div>
         </div>
     <?php
     return ob_get_clean();
@@ -192,11 +204,11 @@ function post_new_product_box() {
             $id = $_POST['amazin-product-id'];
 
             $content = array(
-                "productName" => $_POST['amazin-product-name'],
-                "productTagline" => $_POST['amazin-product-tagline'],
-                "productDescription" => $_POST['amazin-product-description'],
-                "productUrl" => $_POST['amazin-product-url'],
-                "productButtonText" => $_POST['amazin-product-button-text']
+                'productName' => $_POST['amazin-product-name'],
+                'productTagline' => $_POST['amazin-product-tagline'],
+                'productDescription' => $_POST['amazin-product-description'],
+                'productUrl' => $_POST['amazin-product-url'],
+                'productButtonText' => $_POST['amazin-product-button-text']
             );
 
             $product_box = array(
@@ -234,10 +246,13 @@ function amazin_delete_post( ) {
 function amazin_get_existing_post( ) {
     $post = get_post($_REQUEST['id']);
     if ($post) {
+        $stripped = stripslashes($post->post_content);
+        $content = json_decode($stripped, true);
+
         $postDataToBePassed = array(
             'productBoxProductName' => $post->post_title,
             'productBoxID' => $post->ID,
-            'productBoxData' => $post->post_content
+            'productBoxData' => $content
         );
         wp_send_json($postDataToBePassed);
     } else {

@@ -36,7 +36,7 @@ jQuery ( document ).ready ( function ( $ ) {
             },
             success: function ( response ) {
                 var id = response.productBoxID;
-                var data = JSON.parse(response.productBoxData);
+                var data = response.productBoxData;
 
                 $ ("#current-form-behavior-title").text("Editing Product Box ID " + id);
 
