@@ -126,7 +126,7 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      */
     function column_cb( $item ) {
         return sprintf(
-            '<input type="checkbox" name="product_box_id[]" value="%d" />', $item->ID
+            '<input type="checkbox" name="product_box_id[]" value="%d" />', $item->id
         );
     }
 

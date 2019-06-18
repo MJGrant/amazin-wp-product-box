@@ -13,7 +13,7 @@ function apb_get_all_product_boxes( $args = array() ) {
     $defaults = array(
         'number'     => 20,
         'offset'     => 0,
-        'orderby'    => 'id',
+        'orderby'    => 'ID',
         'order'      => 'ASC',
     );
 
@@ -48,8 +48,19 @@ function apb_get_product_box_count() {
  *
  * @return array
  */
-function apb_get_product_box( $id = 0 ) {
+function apb_get_product_box( $id ) {
     global $wpdb;
 
     return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'posts WHERE id = %d', $id ) );
 }
+
+function apb_new_product_box ( $product_box) {
+    wp_insert_post( $product_box );
+    return 1;
+}
+
+function apb_update_product_box ( $product_box) {
+    wp_update_post ( $product_box );
+    return $product_box->id;
+}
+

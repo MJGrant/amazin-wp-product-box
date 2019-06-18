@@ -2,7 +2,7 @@
     <h1><?php _e( 'Edit Product Box', 'apb' ); ?></h1>
 
     <?php
-    $item = apb_get_product_box( $id );
+    $item = apb_get_product_box( $_GET['id'] );
     $stripped = stripslashes($item->post_content);
     $content = json_decode($stripped, true);
     ?>
@@ -59,7 +59,7 @@
              </tbody>
         </table>
 
-        <input type="hidden" name="field_id" value="<?php echo $item->id; ?>">
+        <input type="hidden" name="field_id" value="<?php echo $item->ID; ?>">
 
         <?php wp_nonce_field( '' ); ?>
         <?php submit_button( __( 'Update Product Box', 'apb' ), 'primary', 'submit_product_box' ); ?>

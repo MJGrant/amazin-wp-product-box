@@ -72,8 +72,6 @@ class Form_Handler {
             exit;
         }
 
-        $id = $field_id;
-
         $content = array(
             'productName' => $field_productName,
             'productTagline' => $field_tagline,
@@ -83,7 +81,7 @@ class Form_Handler {
         );
 
         $product_box = array(
-            'ID'            => $id,
+            'ID'            => $field_id,
             'post_title'    => $field_productName,
             'post_type'     => 'amazin_product_box',
             'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
@@ -94,14 +92,9 @@ class Form_Handler {
 
         // New or edit?
         if ( ! $field_id ) {
-
-            $insert_id = wp_insert_post( $product_box ); //apb_insert_product_box( $fields );
-
+            $insert_id = apb_new_product_box( $product_box );
         } else {
-
-            $fields['id'] = $field_id;
-
-            $insert_id = wp_update_post ( $product_box ); //apb_insert_product_box( $fields );
+            $insert_id = apb_update_product_box( $product_box );
         }
 
         if ( is_wp_error( $insert_id ) ) {

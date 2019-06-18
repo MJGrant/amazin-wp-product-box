@@ -32,7 +32,7 @@ class Amazin_Product_Box_Admin_Menu {
      */
     public function plugin_page() {
         $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
-        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+        $ID     = isset( $_GET['ID'] ) ? intval( $_GET['ID'] ) : 0;
 
         switch ($action) {
             case 'view':
