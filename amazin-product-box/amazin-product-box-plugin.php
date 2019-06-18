@@ -47,6 +47,35 @@ function amazin_product_box_shortcode( $atts ) {
     }
 }
 
+function amazin_product_box_render_in_post($productBox) {
+    ob_start();
+    $id = $productBox->ID;
+    $productBoxTitle = $productBox->post_title;
+    $stripped = stripslashes($productBox->post_content);
+    $content = json_decode($stripped, true);
+    ?>
+        <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
+            <p class="amazin-product-box-recommend-text">We recommend</p>
+            <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
+            <div class="row">
+                <div class="amazin-product-box-column amazin-product-box-left">
+                    Picture placeholder
+                </div>
+                <div class="amazin-product-box-column amazin-product-box-right">
+                    <p class="amazin-product-box-tagline"><?php echo $content['productTagline'] ?></p>
+                    <p class="amazin-product-box-description" ><?php echo $content['productDescription'] ?></p>
+                </div>
+            </div>
+            <div class="amazin-product-box-button-wrap">
+                <a href="<?php echo $content['productLink'] ?>" class="amazin-product-box-button"><?php echo $content['productButtonText'] ?></a>
+            </div>
+        </div>
+    <?php
+    return ob_get_clean();
+}
+
 add_shortcode( 'amazin-product-box', 'amazin_product_box_shortcode' );
+$cssurl = plugin_dir_url(__FILE__) . 'styles.css';
+wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.23 );
 
 ?>
