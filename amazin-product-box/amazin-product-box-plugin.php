@@ -31,6 +31,22 @@ add_action( 'init', function() {
     );
 
     new Amazin_Product_Box_Admin_Menu();
-})
+});
+
+function amazin_product_box_shortcode( $atts ) {
+    $a = shortcode_atts( array(
+        'id' => 'id'
+        ), $atts );
+
+    $productBox = get_post($a['id']);
+
+    if ($productBox) {
+        return amazin_product_box_render_in_post($productBox);
+    } else {
+        return 'Error displaying Amazin Product Box';
+    }
+}
+
+add_shortcode( 'amazin-product-box', 'amazin_product_box_shortcode' );
 
 ?>
