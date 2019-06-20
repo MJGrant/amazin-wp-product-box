@@ -56,10 +56,6 @@ function apb_get_product_box( $id ) {
 
 function apb_new_product_box ( $product_box) {
     wp_insert_post( $product_box );
-    wp_insert_post( $product_box );
-    wp_insert_post( $product_box );
-    wp_insert_post( $product_box );
-    wp_insert_post( $product_box );
     return 1;
 }
 
