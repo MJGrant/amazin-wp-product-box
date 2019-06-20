@@ -7,6 +7,13 @@
         <?php
         $list_table = new Amazin_Product_Box_List_Table();
         $list_table->prepare_items();
+
+        $message = '';
+        if ('delete' === $list_table->current_action()) {
+            $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'apb'), count($_REQUEST['id'])) . '</p></div>';
+        }
+        echo $message;
+
         $list_table->search_box( 'search', 'search_id' );
         $list_table->display();
         ?>

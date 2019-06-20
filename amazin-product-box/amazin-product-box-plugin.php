@@ -32,7 +32,6 @@ add_action( 'init', function() {
             'can_export'        => true,
         )
     );
-
     new Amazin_Product_Box_Admin_Menu();
 });
 

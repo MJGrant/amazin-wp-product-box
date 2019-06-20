@@ -56,5 +56,6 @@ class Amazin_Product_Box_Admin_Menu {
         if ( file_exists( $template ) ) {
             include $template;
         }
+
     }
 }
