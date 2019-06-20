@@ -11,8 +11,8 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
 
     function __construct() {
         parent::__construct( array(
-            'singular' => 'product box',
-            'plural'   => 'product boxes',
+            'singular' => 'product_box',
+            'plural'   => 'product_boxes',
             'ajax'     => false
         ) );
     }
@@ -83,13 +83,23 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      *
      * @return string
      */
-    function column_name( $item ) {
+    //function column_name( $item ) {
 
-        $actions           = array();
-        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=amazinProductBox&action=edit&id=' . $item->ID ), $item->ID, __( 'Edit this item', 'apb' ), __( 'Edit', 'apb' ) );
-        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=amazinProductBox&action=delete&id=' . $item->ID ), $item->ID, __( 'Delete this item', 'apb' ), __( 'Delete', 'apb' ) );
+       // $item_json = json_decode(json_encode($item), true);
 
-        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=amazinProductBox&action=view&id=' . $item->ID ), $item->post_title, $this->row_actions( $actions ) );
+        //$actions           = array();
+        //$actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=amazinProductBox&action=edit&id=' . $item->ID ), $item->ID, __( 'Edit this item', 'apb' ), __( 'Edit', 'apb' ) );
+        //$actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=amazinProductBox&action=delete&id=' . $item->ID ), $item->ID, __( 'Delete this item', 'apb' ), __( 'Delete', 'apb' ) );
+
+        //return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=amazinProductBox&action=view&id=' . $item->ID ), $item->post_title, $this->row_actions( $actions ) );
+    //}
+    function column_name($item){
+        $item_json = json_decode(json_encode($item), true);
+        $actions = array(
+            'edit' => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>', $_REQUEST['page'], 'edit', $item_json['ID']),
+            'delete' => sprintf('<a href="?page=%s&action=%s&id=%s">Delete</a>', $_REQUEST['page'], 'delete', $item_json['ID']),
+        );
+        return sprintf('<b>%s</b> %s', $item_json['post_title'], $this->row_actions($actions));
     }
 
     /**
@@ -112,9 +122,48 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      */
     function get_bulk_actions() {
         $actions = array(
-            'trash'  => __( 'Move to Trash', 'apb' ),
+            'delete'  => __( 'Delete', 'apb' ),
         );
         return $actions;
+    }
+
+    function process_bulk_action() {
+
+        // security check!
+        if ( isset( $_POST['_wpnonce'] ) && ! empty( $_POST['_wpnonce'] ) ) {
+
+            $nonce  = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
+            $action = 'bulk-' . $this->_args['plural'];
+
+            if ( ! wp_verify_nonce( $nonce, $action ) )
+                wp_die( 'Nope! Security check failed!' );
+
+        }
+
+        $action = $this->current_action();
+
+        switch ( $action ) {
+
+            case 'delete':
+
+                if ('delete' === $this->current_action()) {
+
+                    $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+
+                    if (!is_array($ids)) $ids = array($_REQUEST['id']);
+
+                    apb_delete_product_boxes($ids); //expects an array
+                }
+
+                //wp_die( 'You have deleted this succesfully' );
+                break;
+
+            default:
+                return;
+                break;
+        }
+
+        return;
     }
 
     /**
@@ -124,9 +173,16 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      *
      * @return string
      */
+    /*
     function column_cb( $item ) {
         return sprintf(
-            '<input type="checkbox" name="product_box_id[]" value="%d" />', $item->id
+            '<input type="checkbox" name="product_box[]" value="%d" />', $item->ID
+        );
+    }*/
+    function column_cb($item) {
+        return sprintf(
+            '<input type="checkbox" name="id[]" value="%s" />',
+            $item->ID
         );
     }
 
@@ -137,7 +193,7 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      */
     public function get_views_() {
         $status_links   = array();
-        $base_link      = admin_url( 'admin.php?page=sample-page' );
+        $base_link      = admin_url( 'admin.php?page=amazinProductBox' );
 
         foreach ($this->counts as $key => $value) {
             $class = ( $key == $this->page_status ) ? 'current' : 'status-' . $key;
@@ -170,6 +226,8 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
             'number' => $per_page,
         );
 
+        $bulk_selected = array();
+
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
             $args['orderby'] = $_REQUEST['orderby'];
             $args['order']   = $_REQUEST['order'] ;
@@ -177,9 +235,12 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
 
         $this->items  = apb_get_all_product_boxes( $args );
 
+        $this->process_bulk_action();
+
         $this->set_pagination_args( array(
             'total_items' => apb_get_product_box_count(),
             'per_page'    => $per_page
         ) );
     }
 }
+?>

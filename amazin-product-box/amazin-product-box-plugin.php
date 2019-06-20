@@ -14,6 +14,9 @@ add_action( 'init', function() {
     include dirname( __FILE__ ) . '/includes/class-form-handler.php';
     include dirname( __FILE__ ) . '/includes/amazin-product-box-functions.php';
 
+    $cssurl = plugin_dir_url(__FILE__) . 'styles.css';
+    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.23 );
+
     register_post_type('amazin_product_box',
         array(
             'labels' => array(
@@ -75,7 +78,5 @@ function amazin_product_box_render_in_post($productBox) {
 }
 
 add_shortcode( 'amazin-product-box', 'amazin_product_box_shortcode' );
-$cssurl = plugin_dir_url(__FILE__) . 'styles.css';
-wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.23 );
 
 ?>

@@ -64,3 +64,12 @@ function apb_update_product_box ( $product_box) {
     return $product_box->id;
 }
 
+function apb_delete_product_boxes ( $ids ) {
+    global $wpdb;
+
+    $ids = implode( ',', array_map( 'absint', $ids ) );
+    $delQuery = "DELETE FROM " . $wpdb->prefix . "posts WHERE id IN ($ids)";
+
+    return $wpdb->query( $delQuery );
+}
+
