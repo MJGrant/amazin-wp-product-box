@@ -10,7 +10,7 @@
 
         $message = '';
         if ('delete' === $list_table->current_action()) {
-            $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'apb'), count($_REQUEST['id'])) . '</p></div>';
+            $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Product Boxes deleted: %d', 'apb'), count($_REQUEST['id'])) . '</p></div>';
         }
         echo $message;
 
