@@ -9,6 +9,15 @@
 
     <form action="" method="post">
 
+        <div class="upload">
+            <img data-src="' . $default_image . '" src="<?php echo esc_attr( wp_get_attachment_url( $content['productImage'] ) ); ?>" width="120px" height="120px" />
+            <div>
+                <input type="hidden" name="Product-Image" id="Product-Image" value="<?php echo esc_attr( $content['productImage'] ); ?>" />
+                <button type="submit" class="upload_image_button button"><?php _e( 'Upload', 'apb' ); ?></button>
+                <button type="submit" class="remove_image_button button"><?php _e( '&times;', 'apb' ); ?></button>
+            </div>
+        </div>
+
         <table class="form-table">
             <tbody>
                 <tr class="row-Product Name">

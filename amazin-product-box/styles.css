@@ -11,10 +11,12 @@
 
 .amazin-product-box-left {
     width:50%;
+    text-align:center;
 }
 
 .amazin-product-box-right {
-    width:50%;
+    width:45%;
+    margin-left:20px;
 }
 
 .amazin-product-box-recommend-text {
@@ -57,4 +59,15 @@
     border-radius:8px;
     margin:10px;
     font-family:sans-serif;
+}
+
+@media screen and (max-width: 979px) {
+    .amazin-product-box-left {
+        width:100%;
+    }
+
+    .amazin-product-box-right {
+        width:100%;
+        margin-left:0;
+    }
 }
