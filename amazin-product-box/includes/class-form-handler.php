@@ -42,6 +42,7 @@ class Form_Handler {
         $field_description = isset( $_POST['Description'] ) ? wp_kses_post( $_POST['Description'] ) : '';
         $field_url = isset( $_POST['URL'] ) ? sanitize_text_field( $_POST['URL'] ) : '';
         $field_buttonText = isset( $_POST['Button-Text'] ) ? sanitize_text_field( $_POST['Button-Text'] ) : '';
+        $field_productImage = isset( $_POST['Product-Image'] ) ? sanitize_text_field( $_POST['Product-Image'] ) : '';
 
         // some basic validation
         if ( ! $field_productName ) {
@@ -77,7 +78,8 @@ class Form_Handler {
             'productTagline' => $field_tagline,
             'productDescription' => $field_description,
             'productUrl' => $field_url,
-            'productButtonText' => $field_buttonText
+            'productButtonText' => $field_buttonText,
+            'productImage' => $field_productImage //ID of media attachment
         );
 
         $product_box = array(

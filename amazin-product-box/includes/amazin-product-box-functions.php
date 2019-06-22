@@ -72,4 +72,3 @@ function apb_delete_product_boxes ( $ids ) {
 
     return $wpdb->query( $delQuery );
 }
-

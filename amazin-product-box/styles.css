@@ -3,18 +3,29 @@
     border:1px solid grey;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding:28px;
+    /* width:700px; */ /* uncomment to center in post */
+    /* margin:0 auto !important;*/ /* uncomment to center in post */
 }
 
 .amazin-product-box-column {
     float:left;
 }
 
+.amazin-product-box-image-row {
+    display:flex;
+    margin-bottom:20px;
+}
+
 .amazin-product-box-left {
     width:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .amazin-product-box-right {
-    width:50%;
+    width:45%;
+    margin-left:20px;
 }
 
 .amazin-product-box-recommend-text {
@@ -44,7 +55,7 @@
     text-align:center;
 }
 
-.amazin-product-box a, .amazin-product-box a:visited {
+.amazin-product-box a, .amazin-product-box a:visited, .amazin-product-box a:hover {
     color:white;
     text-decoration:none !important;
 }
@@ -57,4 +68,15 @@
     border-radius:8px;
     margin:10px;
     font-family:sans-serif;
+}
+
+@media screen and (max-width: 979px) {
+    .amazin-product-box-left {
+        width:100%;
+    }
+
+    .amazin-product-box-right {
+        width:100%;
+        margin-left:0;
+    }
 }
