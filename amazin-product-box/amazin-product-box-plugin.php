@@ -20,7 +20,7 @@ add_action( 'init', function() {
     wp_enqueue_script('admin', $jsurl, array( 'jquery' ), 1.1, true);
 
     $cssurl = plugin_dir_url(__FILE__) . 'styles.css';
-    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.26 );
+    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.30 );
 
     register_post_type('amazin_product_box',
         array(
@@ -64,7 +64,7 @@ function amazin_product_box_render_in_post($productBox) {
         <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
             <p class="amazin-product-box-recommend-text">We recommend</p>
             <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
-            <div class="row">
+            <div class="row amazin-product-box-image-row">
                 <div class="amazin-product-box-column amazin-product-box-left">
                     <img src="<?php echo wp_get_attachment_url( $content['productImage'] ) ?>"/>
                 </div>
