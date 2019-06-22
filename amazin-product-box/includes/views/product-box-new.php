@@ -5,6 +5,7 @@
 
         <?php
             $default_image = '';
+            $phURL = esc_url( plugins_url('ph.png', __FILE__ ) ) ;
         ?>
 
         <table class="form-table">
@@ -27,7 +28,7 @@
                     </th>
                     <td>
                         <div class="upload">
-                            <img data-src="' . $default_image . '" src="' . $src . '" width="120px" height="120px" />
+                            <img data-src="<?php echo $phURL ?>" src="<?php echo $phURL ?>" width="120px" height="120px" />
                             <div>
                                 <input type="hidden" name="Product-Image" id="Product-Image" value="" />
                                 <button type="submit" class="upload_image_button button"><?php _e( 'Upload/Choose', 'apb' ); ?></button>

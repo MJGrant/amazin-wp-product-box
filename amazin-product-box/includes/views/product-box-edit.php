@@ -5,6 +5,14 @@
     $item = apb_get_product_box( $_GET['id'] );
     $stripped = stripslashes($item->post_content);
     $content = json_decode($stripped, true);
+    $phURL = esc_url( plugins_url('ph.png', __FILE__ ) ) ;
+
+    $image = esc_attr( wp_get_attachment_url( $content['productImage'] ) );
+
+    if (!$image) {
+        $image = $phURL;
+    }
+
     ?>
 
     <form action="" method="post">
@@ -29,7 +37,7 @@
                     </th>
                     <td>
                         <div class="upload">
-                            <img data-src="' . $default_image . '" src="' . $src . '" width="120px" height="120px" />
+                            <img data-src="<?php echo $phURL ?>" src="<?php echo $image; ?>" width="120px" height="120px" />
                             <div>
                                 <input type="hidden" name="Product-Image" id="Product-Image" value="" />
                                 <button type="submit" class="upload_image_button button"><?php _e( 'Upload/Choose', 'apb' ); ?></button>
