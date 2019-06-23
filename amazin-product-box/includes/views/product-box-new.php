@@ -33,6 +33,8 @@
                                 <input type="hidden" name="Product-Image" id="Product-Image" value="" />
                                 <button type="submit" class="upload_image_button button"><?php _e( 'Upload/Choose', 'apb' ); ?></button>
                                 <button type="submit" class="remove_image_button button"><?php _e( 'Clear', 'apb' ); ?></button>
+                                <br/>
+                                <span class="description"><?php _e('Choose an image that is large (at least 1000x1000 pixels) and square', 'apb' ); ?></span>
                             </div>
                         </div>
                     </td>
