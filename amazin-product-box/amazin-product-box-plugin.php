@@ -20,7 +20,7 @@ add_action( 'init', function() {
     wp_enqueue_script('admin', $jsurl, array( 'jquery' ), 1.1, true);
 
     $cssurl = plugin_dir_url(__FILE__) . 'styles.css';
-    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.31 );
+    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.32 );
 
     register_post_type('amazin_product_box',
         array(
@@ -39,7 +39,9 @@ add_action( 'init', function() {
     );
 
     add_option( 'amazin_product_box_option_headline', 'We recommend');
+    add_option( 'amazin_product_box_option_new_tab', false);
     register_setting( 'amazin_product_box_options_group', 'amazin_product_box_option_headline', 'amazin_product_box_callback' );
+    register_setting( 'amazin_product_box_options_group', 'amazin_product_box_option_new_tab', 'amazin_product_box_callback' );
 
     add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_plugin_action_links' );
 
@@ -72,6 +74,8 @@ function amazin_product_box_render_in_post($productBox) {
     $productBoxTitle = $productBox->post_title;
     $stripped = stripslashes($productBox->post_content);
     $content = json_decode($stripped, true);
+    $newTab = get_option('amazin_product_box_option_new_tab') ? 'target="_blank"' : '';
+
     ?>
         <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
             <p class="amazin-product-box-recommend-text"><?php echo get_option('amazin_product_box_option_headline'); ?></p>
@@ -86,7 +90,7 @@ function amazin_product_box_render_in_post($productBox) {
                 </div>
             </div>
             <div class="amazin-product-box-button-wrap">
-                <a href="<?php echo $content['productUrl'] ?>" class="amazin-product-box-button"><?php echo $content['productButtonText'] ?></a>
+                <a href="<?php echo $content['productUrl'] ?>" class="amazin-product-box-button" <?php echo $newTab ?> ><?php echo $content['productButtonText'] ?></a>
             </div>
         </div>
     <?php
