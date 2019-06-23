@@ -18,4 +18,23 @@
         $list_table->display();
         ?>
     </form>
+
+    <form method="post" action="options.php">
+        <?php settings_fields( 'amazin_product_box_options_group' ); ?>
+        <h3>Product box settings</h3>
+        <p>These settings are shared by all product boxes on your site.</p>
+        <table>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="amazin_product_box_option_headline">Product Box Headline</label>
+                </th>
+            <td>
+                <input type="text" id="amazin_product_box_option_headline" name="amazin_product_box_option_headline" value="<?php echo get_option('amazin_product_box_option_headline'); ?>" />
+                <br/>
+                <span class="description"><?php _e('Examples: "We recommend", "Our pick", "A Sitename Favorite", etc.', 'apb' ); ?></span>
+            </td>
+            </tr>
+        </table>
+        <?php  submit_button(); ?>
+    </form>
 </div>

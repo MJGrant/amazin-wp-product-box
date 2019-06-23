@@ -25,7 +25,6 @@ class Amazin_Product_Box_Admin_Menu {
         add_submenu_page( 'amazinProductBox', __( 'AmazinProductBox', 'apb' ), __( 'AmazinProductBox', 'apb' ), 'manage_options', 'amazinProductBox', array( $this, 'plugin_page' ) );
 
         wp_enqueue_media();
-
     }
 
     /**
