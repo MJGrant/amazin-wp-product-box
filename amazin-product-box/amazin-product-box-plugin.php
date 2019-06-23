@@ -37,6 +37,10 @@ add_action( 'init', function() {
             'can_export'        => true,
         )
     );
+
+    add_option( 'amazin_product_box_option_headline', 'We recommend');
+    register_setting( 'amazin_product_box_options_group', 'amazin_product_box_option_headline', 'amazin_product_box_callback' );
+
     new Amazin_Product_Box_Admin_Menu();
 });
 
@@ -62,7 +66,7 @@ function amazin_product_box_render_in_post($productBox) {
     $content = json_decode($stripped, true);
     ?>
         <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
-            <p class="amazin-product-box-recommend-text">We recommend</p>
+            <p class="amazin-product-box-recommend-text"><?php echo get_option('amazin_product_box_option_headline'); ?></p>
             <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
             <div class="row amazin-product-box-image-row">
                 <div class="amazin-product-box-column amazin-product-box-left">
