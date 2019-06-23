@@ -45,7 +45,7 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
                 return 'Name here'; //$item->post_title;
 
             case 'shortcode':
-                return $item->ID;
+                return '[amazin-product-box id="'.$item->ID.'"]';
 
             case 'author':
                 return get_the_author_meta( 'display_name', $item->post_author );;
@@ -99,7 +99,7 @@ class Amazin_Product_Box_List_Table extends WP_List_Table {
      */
     function get_sortable_columns() {
         $sortable_columns = array(
-            'name' => array( 'name', true ),
+            'name' => array( 'post_title', true ),
         );
 
         return $sortable_columns;
