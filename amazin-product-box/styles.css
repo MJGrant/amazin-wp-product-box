@@ -3,8 +3,8 @@
     border:1px solid grey;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding:28px;
-    /* width:700px; */ /* uncomment to center in post */
-    /* margin:0 auto !important;*/ /* uncomment to center in post */
+    width:80%;
+    margin:0 auto !important;
 }
 
 .amazin-product-box-column {
