@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) OR exit;
 
 /**
  * Handle the form submissions
@@ -26,11 +27,11 @@ class Form_Handler {
         }
 
         if ( ! wp_verify_nonce( $_POST['_wpnonce'], '' ) ) {
-            die( __( 'Are you cheating?', 'apb' ) );
+            die( __( 'Security check failed.', 'apb' ) );
         }
 
         if ( ! current_user_can( 'read' ) ) {
-            wp_die( __( 'Permission Denied!', 'apb' ) );
+            wp_die( __( 'Permission denied!', 'apb' ) );
         }
 
         $errors   = array();

@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) OR exit;
+?>
+
 <div class="wrap">
     <h2><?php _e( 'Amazin\' Product Boxes', 'apb' ); ?> <a href="<?php echo admin_url( 'admin.php?page=amazinProductBox&action=new' ); ?>" class="add-new-h2"><?php _e( 'Add New', 'apb' ); ?></a></h2>
     <div class="notice notice-info not-dismissible">
@@ -52,6 +56,6 @@
                 </tr>
             </tbody>
         </table>
-        <?php  submit_button(); ?>
+        <?php submit_button(); ?>
     </form>
 </div>

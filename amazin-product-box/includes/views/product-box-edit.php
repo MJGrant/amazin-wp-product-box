@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) OR exit;
+?>
+
 <div class="wrap">
     <h1><?php _e( 'Edit Product Box', 'apb' ); ?></h1>
 

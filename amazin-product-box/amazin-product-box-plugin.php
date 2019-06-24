@@ -8,6 +8,8 @@
  * Author URI: http://majoh.dev
  */
 
+defined( 'ABSPATH' ) OR exit;
+
 add_action( 'init', function() {
     include dirname( __FILE__ ) . '/includes/class-amazin-product-box-admin-menu.php';
     include dirname( __FILE__ ) . '/includes/class-amazin-product-box-list-table.php';

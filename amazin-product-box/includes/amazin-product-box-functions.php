@@ -1,7 +1,8 @@
 <?php
+defined( 'ABSPATH' ) OR exit;
 
 /**
- * Get all product box
+ * Get all product boxes
  *
  * @param $args array
  *

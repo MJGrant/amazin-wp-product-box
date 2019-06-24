@@ -4,6 +4,11 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     die;
 }
 
+defined( 'ABSPATH' ) OR exit;
+
+if ( ! current_user_can( 'activate_plugins' ) )
+    return;
+
 $option_names = array('amazin_product_box_option_headline', 'amazin_product_box_option_new_tab');
 foreach ($option_names as $option_name) {
     delete_option($option_name);
