@@ -87,7 +87,7 @@ class Form_Handler {
             'ID'            => $field_id,
             'post_title'    => $field_productName,
             'post_type'     => 'amazin_product_box',
-            'post_content'  => wp_json_encode($content), //broke when switched this from 'none' to the content array
+            'post_content'  => wp_json_encode($content, JSON_HEX_APOS), //broke when switched this from 'none' to the content array
             'post_status'   => 'publish',
             'post_author'   => 1,
             'post_category' => array( 8,39 )

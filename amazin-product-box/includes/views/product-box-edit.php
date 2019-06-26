@@ -7,8 +7,7 @@ defined( 'ABSPATH' ) OR exit;
 
     <?php
     $item = apb_get_product_box( $_GET['id'] );
-    $stripped = stripslashes($item->post_content);
-    $content = json_decode($stripped, true);
+    $content = json_decode($item->post_content, true);
     $phURL = esc_url( plugins_url('ph.png', __FILE__ ) ) ;
 
     $image = esc_attr( wp_get_attachment_url( $content['productImage'] ) );

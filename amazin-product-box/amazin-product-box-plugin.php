@@ -22,7 +22,7 @@ add_action( 'init', function() {
     wp_enqueue_script('admin', $jsurl, array( 'jquery' ), 1.1, true);
 
     $cssurl = plugin_dir_url(__FILE__) . 'styles.css';
-    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.32 );
+    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.35 );
 
     register_post_type('amazin_product_box',
         array(
@@ -74,15 +74,18 @@ function amazin_product_box_render_in_post($productBox) {
     ob_start();
     $id = $productBox->ID;
     $productBoxTitle = $productBox->post_title;
-    $stripped = stripslashes($productBox->post_content);
-    $content = json_decode($stripped, true);
+    $item = apb_get_product_box( 219 );
+    //die($item);
+    $content = json_decode($item->post_content, true);
+    //$stripped = stripslashes($productBox->post_content);
+    //$content = json_decode($stripped, true);
     $newTab = get_option('amazin_product_box_option_new_tab') ? 'target="_blank"' : '';
 
     ?>
         <div class="amazin-product-box" id="<?php echo 'amazin-product-box-id-'.$id; ?>">
             <p class="amazin-product-box-recommend-text"><?php echo get_option('amazin_product_box_option_headline'); ?></p>
             <h3 class="amazin-product-box-product-name"><?php echo $productBoxTitle ?></h3>
-            <div class="row amazin-product-box-image-row">
+            <div class="amazin-product-box-image-row">
                 <div class="amazin-product-box-column amazin-product-box-left">
                     <img src="<?php echo wp_get_attachment_url( $content['productImage'] ) ?>"/>
                 </div>

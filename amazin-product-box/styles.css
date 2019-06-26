@@ -4,7 +4,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding:28px;
     width:80%;
-    margin:0 auto !important;
+    margin:30px auto !important;
 }
 
 .amazin-product-box-column {
@@ -49,6 +49,7 @@
 
 .amazin-product-box-description {
     line-height:1.4;
+    margin-top:12px;
 }
 
 .amazin-product-box-button-wrap {
@@ -70,7 +71,7 @@
     font-family:sans-serif;
 }
 
-@media screen and (max-width: 979px) {
+@media screen and (max-width: 512px) {
     .amazin-product-box-left {
         width:100%;
     }
@@ -78,5 +79,6 @@
     .amazin-product-box-right {
         width:100%;
         margin-left:0;
+        margin-top:12px;
     }
 }
