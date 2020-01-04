@@ -3,7 +3,7 @@
  * Plugin Name: Amazin' Product Box
  * Plugin URI: http://majoh.dev
  * Description: Showcase your recommended products in your posts with eye-catching product boxes
- * Version: 1.0
+ * Version: 1.1
  * Author: Mandi Grant
  * Author URI: http://majoh.dev
  */
@@ -13,16 +13,16 @@ defined( 'ABSPATH' ) OR exit;
 add_action( 'init', function() {
     include dirname( __FILE__ ) . '/includes/class-amazin-product-box-admin-menu.php';
     include dirname( __FILE__ ) . '/includes/class-amazin-product-box-list-table.php';
-    include dirname( __FILE__ ) . '/includes/class-form-handler.php';
+    include dirname( __FILE__ ) . '/includes/class-amazin-product-box-form-handler.php';
     include dirname( __FILE__ ) . '/includes/amazin-product-box-functions.php';
 
     // WordPress image upload library
     wp_enqueue_media();
     $jsurl = plugin_dir_url(__FILE__) . 'admin.js';
-    wp_enqueue_script('admin', $jsurl, array( 'jquery' ), 1.1, true);
+    wp_enqueue_script('admin', $jsurl, array( 'jquery' ), 1.2, true);
 
     $cssurl = plugin_dir_url(__FILE__) . 'styles.css';
-    wp_enqueue_style( 'amazin-stylesheet', $cssurl, array(), 1.35 );
+    wp_enqueue_style( 'amazin-product-box-stylesheet', $cssurl, array(), 1.36 );
 
     register_post_type('amazin_product_box',
         array(
@@ -74,11 +74,8 @@ function amazin_product_box_render_in_post($productBox) {
     ob_start();
     $id = $productBox->ID;
     $productBoxTitle = $productBox->post_title;
-    $item = apb_get_product_box( 219 );
-    //die($item);
+    $item = apb_get_product_box( $id );
     $content = json_decode($item->post_content, true);
-    //$stripped = stripslashes($productBox->post_content);
-    //$content = json_decode($stripped, true);
     $newTab = get_option('amazin_product_box_option_new_tab') ? 'target="_blank"' : '';
 
     ?>
