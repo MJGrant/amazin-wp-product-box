@@ -45,12 +45,12 @@ add_action( 'init', function() {
     register_setting( 'amazin_product_box_options_group', 'amazin_product_box_option_headline', 'amazin_product_box_callback' );
     register_setting( 'amazin_product_box_options_group', 'amazin_product_box_option_new_tab', 'amazin_product_box_callback' );
 
-    add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_plugin_action_links' );
+    add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'amazin_product_box_add_plugin_action_links' );
 
     new Amazin_Product_Box_Admin_Menu();
 });
 
-function add_plugin_action_links( $links ) {
+function amazin_product_box_add_plugin_action_links( $links ) {
     $plugin_url = admin_url( 'admin.php?page=amazinProductBox' );
     $links[] = '<a href="' . $plugin_url . '">' . __( 'Manage Product Boxes', 'apb' ) . '</a>';
     return $links;
