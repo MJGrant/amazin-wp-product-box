@@ -92,7 +92,7 @@ function amazin_product_box_render_in_post($productBox) {
                 </div>
             </div>
             <div class="amazin-product-box-button-wrap">
-                <a href="<?php echo $content['productUrl'] ?>" class="amazin-product-box-button" <?php echo $newTab ?> ><?php echo $content['productButtonText'] ?></a>
+                <a href="<?php echo $content['productUrl'] ?>" class="amazin-button amazin-product-box-button" <?php echo $newTab ?> ><?php echo $content['productButtonText'] ?></a>
             </div>
         </div>
     <?php
