@@ -72,6 +72,10 @@
 }
 
 @media screen and (max-width: 512px) {
+    .amazin-product-box-image-row {
+        flex-direction:column;
+    }
+
     .amazin-product-box-left {
         width:100%;
     }
